@@ -17,7 +17,7 @@ function App() {
     introduction: '',
     photo: '',
   });
-
+  const [previewMember, setPreviewMember] = useState<Member | null>(null);
   useEffect(() => {
     fetch('/api/members')
       .then(response => response.json())
@@ -63,10 +63,14 @@ function App() {
       })
       .catch(error => console.error('Error adding member:', error));
   };
+  const handlePreview = (event: React.FormEvent) => {
+    event.preventDefault();
+    setPreviewMember(newMember);
+  };
 
   return (
     <div className="App">
-      <h1>Project Members</h1>
+      <h1>VMKS Members</h1>
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -104,10 +108,20 @@ function App() {
             />
           </div>
           <div className="form-group">
-            <button type="submit">Add New Member</button>
+            <button type="button" onClick={handlePreview}>
+              Preview
+            </button>
+            
+            <button type="submit">Add</button>
           </div>
         </form>
       </div>
+      {previewMember && (
+        <div className="preview-container">
+          <h2>Preview</h2>
+          <MemberList members={[previewMember]} />
+        </div>
+      )}
       <MemberList members={members} />
     </div>
   );

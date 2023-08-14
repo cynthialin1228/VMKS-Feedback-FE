@@ -51,9 +51,11 @@
   margin: 0 auto;
 }
 
+
 .form-group {
   margin-bottom: 10px;
-  text-align: left;
+  text-align: center;
+
 }
 
 .form-group label {
@@ -74,16 +76,27 @@
 }
 
 .form-group button {
-  background-color: #007bff;
+  background-color: #8dc4ff;
   color: #fff;
   border: none;
   border-radius: 5px;
   padding: 8px 16px;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 .form-group button:hover {
-  background-color: #0056b3;
+  background-color: #69e9fa;
+}
+
+.preview-container {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+  white-space: pre-line;
+  word-wrap: break-word;
 }
 
 .member-list {
@@ -131,3 +144,17 @@ img {
    margin: 0 auto;
    padding: 1rem 0;
  }
+
+ .photo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.circular-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #007bff;
+}
