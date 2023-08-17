@@ -24,19 +24,19 @@ function App() {
       photo: '',
     },
     {
-      name: 'kkk',
+      name: 'lalala',
       jobTitle: '前端組',
       introduction: 'Creating nice user experiences.',
       photo: '',
     },
     {
-      name: 'kkk',
+      name: 'ccj',
       jobTitle: '前端組',
       introduction: 'Creating nice user experiences.',
       photo: '',
     },
     {
-      name: 'kkk',
+      name: 'kjh',
       jobTitle: '前端組',
       introduction: 'Creating nice user experiences.',
       photo: '',
@@ -68,18 +68,25 @@ function App() {
     photo: '',
   });
   const [previewMember, setPreviewMember] = useState<Member | null>(null);
+  const [showAutocomplete, setShowAutocomplete] = useState(false); 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setNewMember({ ...newMember, [name]: value });
+    setShowAutocomplete(true);
+  }
+  const handleMemberSelect = (selectedMember: Member) => {
+    setNewMember({ ...newMember, name: selectedMember.name });
+    setShowAutocomplete(false);
   }
   const handlePreview = (event: React.FormEvent) => {
     event.preventDefault();
+    //something#########
   }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-      // setMembers([...members, newMember]);
+    //something##########
       setNewMember({
         name: '',
         jobTitle: '',
@@ -107,7 +114,20 @@ function App() {
               name="name"
               value={newMember.name}
               onChange={handleInputChange}
+              onFocus={() => setShowAutocomplete(true)} 
+              placeholder="Search and select a member"
             />
+            {showAutocomplete && (
+            <ul className="autocomplete-list">
+              {members
+                .filter(member => member.name.toLowerCase().includes(newMember.name.toLowerCase()))
+                .map((member, index) => (
+                  <ul key={index} onClick={() => handleMemberSelect(member)}>
+                    {member.name}
+                  </ul>
+                ))}
+            </ul>
+            )}
           </div>
           <div className="form-group">
             <label>For:</label>

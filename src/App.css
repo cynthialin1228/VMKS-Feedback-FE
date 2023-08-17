@@ -160,3 +160,20 @@ img {
   object-fit: cover;
   border: 3px solid #007bff;
 }
+.autocomplete-list ul {
+  padding: 8px 16px;
+  margin: 2px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.autocomplete-list {
+  list-style-type: none;
+  padding: 0;
+  text-align: left;
+}
+
+.autocomplete-list ul:hover {
+  background-color: #e0e0e0;
+}
