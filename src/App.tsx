@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import MemberList from './MemberList';
+import FeedbackList from './FeedbackList';
 
 interface Member {
   name: string;
   jobTitle: string;
   introduction: string;
   photo: string;
+}
+interface Feedback {
+  name: string;
+  jobTitle: string;
 }
 
 function App() {
@@ -60,40 +65,36 @@ function App() {
       photo: '',
     },
   ]);
-
-  const [newMember, setNewMember] = useState<Member>({
+  const [feedbacks] = useState<Feedback[]>([]);
+  const [newFeedback, setNewFeedback] = useState<Feedback>({
     name: '',
     jobTitle: '',
-    introduction: '',
-    photo: '',
   });
-  const [previewMember, setPreviewMember] = useState<Member | null>(null);
   const [showAutocomplete, setShowAutocomplete] = useState(false); 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
-    setNewMember({ ...newMember, [name]: value });
+    setNewFeedback({ ...newFeedback, [name]: value });
     setShowAutocomplete(true);
   }
   const handleMemberSelect = (selectedMember: Member) => {
-    setNewMember({ ...newMember, name: selectedMember.name });
+    setNewFeedback({ ...newFeedback, name: selectedMember.name });
     setShowAutocomplete(false);
   }
-  const handlePreview = (event: React.FormEvent) => {
-    event.preventDefault();
-    //something#########
-  }
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    //something##########
-      setNewMember({
+
+    //backend part
+
+    setNewFeedback({
         name: '',
         jobTitle: '',
-        introduction: '',
-        photo: '',
-      });
-      setPreviewMember(null);
+    });
+    <div className="form-container">
+          <h2>Adding</h2>
+          <FeedbackList feedbacks={[newFeedback]} />
+    </div>
   }
 
   return (
@@ -102,7 +103,10 @@ function App() {
       <div className="member-list">
         <MemberList members={members} />
       </div>
+      <br></br>
       <h1>User Feedback</h1>
+      <br></br>
+      <div className="feedback-div">
       <div className="form-container">
         <form>
           <h2>I want to post!</h2>
@@ -112,7 +116,7 @@ function App() {
             <input
               type="text"
               name="name"
-              value={newMember.name}
+              value={newFeedback.name}
               onChange={handleInputChange}
               onFocus={() => setShowAutocomplete(true)} 
               placeholder="Search and select a member"
@@ -120,7 +124,7 @@ function App() {
             {showAutocomplete && (
             <ul className="autocomplete-list">
               {members
-                .filter(member => member.name.toLowerCase().includes(newMember.name.toLowerCase()))
+                .filter(member => member.name.toLowerCase().includes(newFeedback.name.toLowerCase()))
                 .map((member, index) => (
                   <ul key={index} onClick={() => handleMemberSelect(member)}>
                     {member.name}
@@ -134,24 +138,23 @@ function App() {
             <input
               type="text"
               name="jobTitle"
-              value={newMember.jobTitle}
+              value={newFeedback.jobTitle}
               onChange={handleInputChange}
             />
           </div>
           <div className="form-group">
-            <button type="button" onClick={handlePreview}>
-              Preview
-            </button>
-            <button type="submit">Add New Member</button>
+            <button type="submit" onClick={handleSubmit}>Add New</button>
           </div>
         </form>
+        
       </div>
-      {previewMember && (
-        <div className="preview-container">
-          <h2>Preview</h2>
-          <MemberList members={[previewMember]} />
+      {newFeedback && (
+        <div className="form-container">
+          <h2>Adding</h2>
+          <FeedbackList feedbacks={[newFeedback]} />
         </div>
       )}
+      </div>
     </div>
   );
 }
