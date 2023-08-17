@@ -10,7 +10,57 @@ interface Member {
 }
 
 function App() {
-  const [members, setMembers] = useState<Member[]>([]);
+  const [members] = useState<Member[]>([
+    {
+      name: '林新晨',
+      jobTitle: '進階開發組',
+      introduction: 'this is the page!',
+      photo: '',
+    },
+    {
+      name: 'kkk',
+      jobTitle: '前端組',
+      introduction: 'Creating nice user experiences.',
+      photo: '',
+    },
+    {
+      name: 'kkk',
+      jobTitle: '前端組',
+      introduction: 'Creating nice user experiences.',
+      photo: '',
+    },
+    {
+      name: 'kkk',
+      jobTitle: '前端組',
+      introduction: 'Creating nice user experiences.',
+      photo: '',
+    },
+    {
+      name: 'kkk',
+      jobTitle: '前端組',
+      introduction: 'Creating nice user experiences.',
+      photo: '',
+    },
+    {
+      name: 'kkk',
+      jobTitle: '前端組',
+      introduction: 'Creating nice user experiences.',
+      photo: '',
+    },
+    {
+      name: 'kkk',
+      jobTitle: '前端組',
+      introduction: 'Creating nice user experiences.',
+      photo: '',
+    },
+    {
+      name: 'kkk',
+      jobTitle: '前端組',
+      introduction: 'Creating nice user experiences.',
+      photo: '',
+    },
+  ]);
+
   const [newMember, setNewMember] = useState<Member>({
     name: '',
     jobTitle: '',
@@ -18,63 +68,40 @@ function App() {
     photo: '',
   });
   const [previewMember, setPreviewMember] = useState<Member | null>(null);
-  useEffect(() => {
-    fetch('/api/members')
-      .then(response => response.json())
-      .then((data: Member[]) => setMembers(data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setNewMember({ ...newMember, [name]: value });
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setNewMember({ ...newMember, photo: reader.result as string });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  }
+  const handlePreview = (event: React.FormEvent) => {
+    event.preventDefault();
+  }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
-    fetch('/api/members', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newMember),
-    })
-      .then(response => response.json())
-      .then((data: Member) => {
-        setMembers([...members, data]);
-        setNewMember({
-          name: '',
-          jobTitle: '',
-          introduction: '',
-          photo: '',
-        });
-      })
-      .catch(error => console.error('Error adding member:', error));
-  };
-  const handlePreview = (event: React.FormEvent) => {
-    event.preventDefault();
-    setPreviewMember(newMember);
-  };
+      // setMembers([...members, newMember]);
+      setNewMember({
+        name: '',
+        jobTitle: '',
+        introduction: '',
+        photo: '',
+      });
+      setPreviewMember(null);
+  }
 
   return (
     <div className="App">
-      <h1>VMKS Members</h1>
+      <h1>Project Members</h1>
+      <div className="member-list">
+        <MemberList members={members} />
+      </div>
+      <h1>User Feedback</h1>
       <div className="form-container">
-        <form onSubmit={handleSubmit}>
+        <form>
+          <h2>I want to post!</h2>
+          <br></br>
           <div className="form-group">
-            <label>Name:</label>
+            <label>To:</label>
             <input
               type="text"
               name="name"
@@ -83,7 +110,7 @@ function App() {
             />
           </div>
           <div className="form-group">
-            <label>Job Title:</label>
+            <label>For:</label>
             <input
               type="text"
               name="jobTitle"
@@ -92,27 +119,10 @@ function App() {
             />
           </div>
           <div className="form-group">
-            <label>Introduction:</label>
-            <textarea
-              name="introduction"
-              value={newMember.introduction}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Photo:</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-          </div>
-          <div className="form-group">
             <button type="button" onClick={handlePreview}>
               Preview
             </button>
-            
-            <button type="submit">Add</button>
+            <button type="submit">Add New Member</button>
           </div>
         </form>
       </div>
@@ -122,7 +132,6 @@ function App() {
           <MemberList members={[previewMember]} />
         </div>
       )}
-      <MemberList members={members} />
     </div>
   );
 }
